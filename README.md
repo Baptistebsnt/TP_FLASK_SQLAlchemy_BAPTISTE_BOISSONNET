@@ -9,5 +9,5 @@ Cette application est un exemple d'API Flask pour la gestion des réservations d
 2. Clonez ce dépôt GitHub :
 
 ```bash
-git clone <https://github.com/Baptistebsnt/TP_FLASK_SQLAlchemy.git>
+git clone https://github.com/Baptistebsnt/TP_FLASK_SQLAlchemy.git
 ```
