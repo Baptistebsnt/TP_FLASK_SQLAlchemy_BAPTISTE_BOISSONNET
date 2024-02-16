@@ -1,0 +1,9 @@
+flask
+flask_sqlalchemy
+pymysql
+Flask-Migrate
+cryptography
+flask-wtf
+wtforms
+werkzeug
+email_validator
