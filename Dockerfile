@@ -8,4 +8,4 @@ COPY src/ /app/src
 ENV FLASK_APP=/app/src/chambres_hotel
 
 
-ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+CMD [ "flask" , "run", "--host=0.0.0.0", "--debug"]

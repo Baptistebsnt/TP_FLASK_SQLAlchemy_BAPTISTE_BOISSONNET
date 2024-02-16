@@ -5,10 +5,12 @@ services:
     volumes:
       - ./src/chambres_hotel:/app/src/chambres_hotel
     ports:
-      - 5000:5000
+      - 5001:5000
   db:
     image: mysql:latest
     restart: always
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: chambres_hotel

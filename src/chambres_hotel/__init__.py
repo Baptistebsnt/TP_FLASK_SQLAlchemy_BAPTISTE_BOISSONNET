@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_migrate import Migrate
-from .models import Auteur
 from .database import db 
 
 
@@ -24,5 +23,3 @@ def create_app():
 
 
     return app
-
-
