@@ -5,15 +5,19 @@ from flask import request
 from flask import jsonify
 from datetime import datetime
 
+# Création du Blueprint
 main = Blueprint('main', __name__)
 
+# Endpoint pour récupérer les chambres disponibles
 @main.route('/api/chambres/disponibles', methods=['GET'])
 def getChambresDisponibles():
     data = request.get_json()
     
+    # Conversion des dates d'arrivée et de départ en objets datetime
     date_arrivee = datetime.strptime(data['date_arrivee'], '%Y-%m-%d')
     date_depart = datetime.strptime(data['date_depart'], '%Y-%m-%d')
 
+    # Vérification des données obligatoires
     if not all([date_arrivee, date_depart]):
         return jsonify({"success": False, "message": "Les dates de réservation sont obligatoires."}), 400
     
@@ -42,7 +46,7 @@ def getChambresDisponibles():
     
     return jsonify(chambres_disponibles)
 
-
+# Endpoint pour créer une réservation
 @main.route("/api/reservations", methods=['POST'])
 def createReservation():
     data = request.get_json()
@@ -52,6 +56,7 @@ def createReservation():
     date_arrivee = data.get('date_arrivee')
     date_depart = data.get('date_depart')
     
+    # Vérification des données obligatoires
     if not all([id_client, id_chambre, date_arrivee, date_depart]):
         return jsonify({"success": False, "message": "Tous les champs doivent être remplis."}), 400
     
@@ -69,12 +74,14 @@ def createReservation():
     if reservations_existantes:
         return jsonify({"success": False, "message": "La chambre spécifiée n'est pas disponible pour les dates sélectionnées."}), 400
     
+    # Création de la réservation
     nouvelle_reservation = Reservation(id_client=id_client, id_chambre=id_chambre, date_arrivee=date_arrivee, date_depart=date_depart)
     db.session.add(nouvelle_reservation)
     db.session.commit()
     
     return jsonify({"success": True, "message": "Réservation créée avec succès."}), 201
 
+# Endpoint pour annuler une réservation
 @main.route("/api/reservations/<int:id>", methods=['DELETE'])
 def deleteReservation(id):
     reservation = Reservation.query.get(id)
@@ -87,6 +94,7 @@ def deleteReservation(id):
     
     return jsonify({"success": True, "message": "Réservation annulée avec succès."}), 200
 
+# Endpoint pour créer une chambre
 @main.route("/api/chambres", methods=['POST'])
 def createChambre():
     data = request.json
@@ -95,17 +103,18 @@ def createChambre():
     chambre_type = data.get('type')
     prix = data.get('prix')
     
+    # Vérification des données obligatoires
     if not all([numero, chambre_type, prix]):
         return jsonify({"success": False, "message": "Tous les champs doivent être remplis."}), 400
     
+    # Création de la chambre
     nouvelle_chambre = Chambre(numero=numero, type=chambre_type, prix=prix)
-    
     db.session.add(nouvelle_chambre)
     db.session.commit()
     
     return jsonify({"success": True, "message": "Chambre ajoutée avec succès."}), 201
 
-
+# Endpoint pour mettre à jour une chambre
 @main.route("/api/chambres/<int:id>", methods=['PUT'])
 def updateChambre(id):
     chambre = Chambre.query.get(id)
@@ -118,6 +127,7 @@ def updateChambre(id):
     db.session.commit()
     return jsonify({"success": True, "message": "Chambre mise à jour avec succès."}), 200
 
+# Endpoint pour supprimer une chambre
 @main.route("/api/chambres/<int:id>", methods=['DELETE'])
 def deleteChambre(id):
     chambre = Chambre.query.get(id)
