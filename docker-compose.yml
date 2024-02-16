@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    volumes:
+      - ./src/chambres_hotel:/app/src/chambres_hotel
+    ports:
+      - 5000:5000
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: chambres_hotel
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
